@@ -12,7 +12,7 @@ TlePage是一个可以为文章分页（含AJAX分页）的Typecho插件
 第三步：填写配置；<br />
 第四步：配置参数；<br />
 第五步：将以下代码放到主题目录下post.php中输出内容的位置进行替换（如：parseContent($this)或$this->content()）；<br />
-<?php TlePage_Plugin::parseContent($this); ?><br />
+<pre><?php TlePage_Plugin::parseContent($this); ?></pre><br />
 第六步：在编写的文章中间通过点击编辑器摘要按钮，插入HR分割线（----------），即为分页分割线；<br />
 第七步：完成。
 
