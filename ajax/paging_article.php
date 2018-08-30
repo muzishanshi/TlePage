@@ -24,6 +24,31 @@ $arr['pageSize'] = $page_rec;
 $arr['totalPage'] = $page;
 
 $content=stripslashes($Tle_content_list[$page_now -1]);
+
+$i=0;
+$match_1 = "/(\!\[).*?\]\[(\d)\]/";
+preg_match_all ($match_1,$content,$matches_1,PREG_PATTERN_ORDER);
+if(count($matches_1)>0&&count($matches_1[0])>0){
+	foreach($matches_1[0] as $val_1){
+		$content=str_replace($val_1,"",$content);
+		$img_prefix=substr($val_1,strlen($val_1)- 3,3);
+		$img_prefix=str_replace("[","\[",$img_prefix);
+		$img_prefix=str_replace("]","\]",$img_prefix);
+		$match_2 = "/(".$img_prefix.":).*?((.gif)|(.jpg)|(.bmp)|(.png)|(.GIF)|(.JPG)|(.PNG)|(.BMP))/";
+		preg_match_all ($match_2,$content,$matches_2,PREG_PATTERN_ORDER);
+		if(count($matches_2)>0&&count($matches_2[0])>0){
+			foreach($matches_2[0] as $val_2){
+				$img=substr($val_2,4);
+				$content=preg_replace($match_2,'<img src="'.$img.'" />',$content);
+				break;
+			}
+		}else{
+			break;
+		}
+		$i++;
+	}
+}
+
 if($page_now==1&&strpos($content, '<!--markdown-->')===0){
 	$content=substr($content,15);
 }

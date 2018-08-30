@@ -3,9 +3,9 @@
  * TlePage是一个可以为文章分页（含AJAX分页）的插件
  * @package TlePage For Typecho
  * @author 二呆
- * @version 1.0.1
+ * @version 1.0.2
  * @link http://www.tongleer.com/
- * @date 2018-08-20
+ * @date 2018-08-30
  */
 
 class TlePage_Plugin implements Typecho_Plugin_Interface{
@@ -22,7 +22,7 @@ class TlePage_Plugin implements Typecho_Plugin_Interface{
     // 插件配置面板
     public static function config(Typecho_Widget_Helper_Form $form){
 		//版本检查
-		$version=file_get_contents('http://api.tongleer.com/interface/TlePage.php?action=update&version=1');
+		$version=file_get_contents('http://api.tongleer.com/interface/TlePage.php?action=update&version=2');
 		$div=new Typecho_Widget_Helper_Layout();
 		$div->html('版本检查：'.$version.'
 			<h3>使用方法</h3>
@@ -179,6 +179,31 @@ class TlePage_Plugin implements Typecho_Plugin_Interface{
 				echo $Tle_log_content;
 			}else{
 				$content=$log_content;
+				
+				$i=0;
+				$match_1 = "/(\!\[).*?\]\[(\d)\]/";
+				preg_match_all ($match_1,$content,$matches_1,PREG_PATTERN_ORDER);
+				if(count($matches_1)>0&&count($matches_1[0])>0){
+					foreach($matches_1[0] as $val_1){
+						$content=str_replace($val_1,"",$content);
+						$img_prefix=substr($val_1,strlen($val_1)- 3,3);
+						$img_prefix=str_replace("[","\[",$img_prefix);
+						$img_prefix=str_replace("]","\]",$img_prefix);
+						$match_2 = "/(".$img_prefix.":).*?((.gif)|(.jpg)|(.bmp)|(.png)|(.GIF)|(.JPG)|(.PNG)|(.BMP))/";
+						preg_match_all ($match_2,$content,$matches_2,PREG_PATTERN_ORDER);
+						if(count($matches_2)>0&&count($matches_2[0])>0){
+							foreach($matches_2[0] as $val_2){
+								$img=substr($val_2,4);
+								$content=preg_replace($match_2,'<img src="'.$img.'" />',$content);
+								break;
+							}
+						}else{
+							break;
+						}
+						$i++;
+					}
+				}
+				
 				if($page_now==1&&strpos($content, '<!--markdown-->')===0){
 					$content=substr($content,15);
 				}
