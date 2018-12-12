@@ -26,5 +26,6 @@ TlePage是一个可以为文章分页（含AJAX分页）的Typecho插件
 Github：https://github.com/muzishanshi/TlePage
 
 #### 更新记录：
+2018-12-12增加了对于如何在标题添加第几页方法的提示及ajax的提示信息<br />
 2018-08-30对Markdown内容及图片格式的显示做了优化<br />
 2018-08-20第一版本问世
