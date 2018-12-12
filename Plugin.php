@@ -3,9 +3,9 @@
  * TlePage是一个可以为文章分页（含AJAX分页）的插件
  * @package TlePage For Typecho
  * @author 二呆
- * @version 1.0.2
+ * @version 1.0.3
  * @link http://www.tongleer.com/
- * @date 2018-08-30
+ * @date 2018-12-12
  */
 
 class TlePage_Plugin implements Typecho_Plugin_Interface{
@@ -22,27 +22,31 @@ class TlePage_Plugin implements Typecho_Plugin_Interface{
     // 插件配置面板
     public static function config(Typecho_Widget_Helper_Form $form){
 		//版本检查
-		$version=file_get_contents('http://api.tongleer.com/interface/TlePage.php?action=update&version=2');
+		$version=file_get_contents('http://api.tongleer.com/interface/TlePage.php?action=update&version=3');
 		$div=new Typecho_Widget_Helper_Layout();
-		$div->html('版本检查：'.$version.'
-			<h3>使用方法</h3>
-			<span><p>第一步（可选）：配置下方参数；</p></span>
-			<span>
-				第二步：将以下代码放到主题目录下post.php中输出内容的位置进行替换（如：parseContent($this)或$this->content()）；
-				<pre>&lt;?php TlePage_Plugin::parseContent($this); ?></pre>
-			</span>
-			<span><p>第三步：在编写的文章中间通过点击编辑器摘要按钮，插入HR分割线（----------），即为分页分割线；</p></span>
-			<h3>注意事项</h3>
-			<span>
-				如果文章中含有图片，需要将typecho默认图片添加方式修改为&lt;img src"" />形式的html代码，如有所不便，敬请谅解。
-			</span>
+		$div->html('
+			<small>
+				版本检查：'.$version.'
+				<h3>使用方法</h3>
+				<span><p>第一步（可选）：配置下方参数；</p></span>
+				<span>
+					第二步：将以下代码放到主题目录下post.php中输出内容的位置进行替换（如：parseContent($this)或$this->content()）；
+					<pre><font color="red">&lt;?php TlePage_Plugin::parseContent($this); ?></font></pre>
+				</span>
+				<span><p>第三步：在编写的文章中间通过点击编辑器分割线<hr>按钮，插入HR分割线（----------），即为分页分割线；</p></span>
+				<h3>注意事项</h3>
+				<span>
+					1、如果文章中含有图片，需要将typecho默认图片添加方式修改为<font color="red">&lt;img src"" /></font>形式的html代码，如有所不便，敬请谅解。<br />
+					2、如果在禁用ajax分页情况下，想要让标题加上第几页的后缀，可以自行在主题目录下header.php的&lt;title>中加上<font color="red">&lt;?php if(@$_GET["page_now"]>1){echo " - 第".@$_GET["page_now"]."页";}?></font>代码即可。
+				</span>
+			</small>
 		');
 		$div->render();
 		
 		$isAjaxPage = new Typecho_Widget_Helper_Form_Element_Radio('isAjaxPage', array(
             'y'=>_t('启用'),
             'n'=>_t('禁用')
-        ), 'y', _t('是否启用AJAX分页'), _t("启用后文章页会使用AJAX无刷新技术进行分页，否则会在每一页之间进行跳转。"));
+        ), 'n', _t('是否启用AJAX分页'), _t("启用后文章页会使用AJAX无刷新技术进行分页，否则会在每一页之间进行跳转。但对于主题不包含jquery的情况，需要手动添加<font color='red'>&lt;script src='https://libs.baidu.com/jquery/1.11.1/jquery.min.js'>&lt;/script></font>代码才可以，如有不便，敬请谅解。"));
         $form->addInput($isAjaxPage->addRule('enum', _t(''), array('y', 'n')));
     }
 
