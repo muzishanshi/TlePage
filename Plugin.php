@@ -33,7 +33,7 @@ class TlePage_Plugin implements Typecho_Plugin_Interface{
 					第二步：将以下代码放到主题目录下post.php中输出内容的位置进行替换（如：parseContent($this)或$this->content()）；
 					<pre><font color="red">&lt;?php TlePage_Plugin::parseContent($this); ?></font></pre>
 				</span>
-				<span><p>第三步：在编写的文章中间通过点击编辑器分割线<hr>按钮，插入HR分割线（----------），即为分页分割线；</p></span>
+				<span><p>第三步：在编写的文章中间通过点击编辑器分割线&lt;hr>按钮，插入HR分割线（----------），即为分页分割线；</p></span>
 				<h3>注意事项</h3>
 				<span>
 					1、如果文章中含有图片，需要将typecho默认图片添加方式修改为<font color="red">&lt;img src"" /></font>形式的html代码，如有所不便，敬请谅解。<br />
